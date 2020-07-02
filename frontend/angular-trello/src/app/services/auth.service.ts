@@ -36,5 +36,10 @@ export class AuthService {
   logout() {
     this.localStorageService.clear('authenticationToken');
     this.localStorageService.clear('username');
+    this.router.navigateByUrl('/login').then(r => true);
+  }
+
+  getUsername(): string {
+    return this.localStorageService.retrieve('username');
   }
 }

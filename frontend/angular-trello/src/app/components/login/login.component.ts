@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import { LoginPayload} from '../../payloads/login-payload';
 import { AuthService} from '../../services/auth.service';
-import {HttpClient} from "@angular/common/http";
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',

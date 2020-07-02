@@ -1,0 +1,26 @@
+header .container {
+  border: 2px solid #000;
+  border-radius: 15px;
+  margin: 10px auto;
+  padding: 0;
+  overflow: hidden;
+}
+
+.logo {
+  border-right: 2px solid #000;
+  text-align: center;
+}
+
+span {
+  line-height: 90px;
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: default;
+}
+
+button {
+  line-height: 80px;
+  border-radius: 0;
+}

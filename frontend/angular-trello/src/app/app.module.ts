@@ -9,11 +9,13 @@ import {NgxWebstorageModule} from 'ngx-webstorage';
 import {HttpClientInterceptor} from './http-client-interceptor';
 import { LoginComponent } from './components/login/login.component';
 import { TableListComponent } from './components/table-list/table-list.component';
-import {AuthGuard} from './auth.guard';
+import {AuthGuard} from './guards/auth.guard';
 import { TableComponent } from './components/table/table.component';
 import {TableService} from './services/table.service';
 import { ListIdPipe } from './pipes/list-id.pipe';
 import { RegisterComponent } from './components/register/register.component';
+import {HeaderComponent} from './components/header/header.component';
+import {LoggedOutGuard} from './guards/logged-out.guard';
 
 
 @NgModule({
@@ -23,7 +25,8 @@ import { RegisterComponent } from './components/register/register.component';
     TableListComponent,
     TableComponent,
     ListIdPipe,
-    RegisterComponent
+    RegisterComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -33,9 +36,10 @@ import { RegisterComponent } from './components/register/register.component';
     NgxWebstorageModule.forRoot(),
     RouterModule.forRoot([
       {path: 'tableList', component: TableListComponent, canActivate: [AuthGuard]},
-      {path: 'login', component: LoginComponent},
+      {path: 'login', component: LoginComponent, canActivate: [LoggedOutGuard]},
       {path: 'table/:id', component: TableComponent, canActivate: [AuthGuard]},
-      {path: 'register', component: RegisterComponent},
+      {path: 'register', component: RegisterComponent, canActivate: [LoggedOutGuard]},
+      {path: '**', redirectTo: '/tableList'},
     ], { onSameUrlNavigation: 'reload' }),
     HttpClientModule
   ],

@@ -19,6 +19,13 @@
         </div>
       </div>
     </div>
+
+    <label class="btn btn-default">
+      <input type="file" (change)="selectFile($event)" />
+    </label>
+    <button class="btn btn-success" [disabled]="!selectedFiles" (click)="upload(tmpTable.id)">
+      Upload
+    </button>
   </ng-container>
 </div>
 

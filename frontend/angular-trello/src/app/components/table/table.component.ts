@@ -42,6 +42,9 @@ export class TableComponent implements OnInit {
   getTable() {
     this.tableService.getTable(this.permaLink).subscribe((data: TablePayload) => {
       this.table = data;
+      console.log(this.table.pic);
+      this.table.pic = 'data:image/jpeg;base64,' + this.table.pic;
+      console.log(this.table.pic);
       this.getCardLists(this.table.id);
       this.getCards(this.table.id);
       this.getFiles();

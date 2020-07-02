@@ -1,64 +1,80 @@
 <ng-container *ngIf="table">
-  <h1 class="p-3 mb-2 bg-dark text-white">
-    {{table.id}} - {{table.tableName}}
-    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addListModal">
-      Create new list
-    </button>
-  </h1>
-<div class="container-fluid">
-  <div *ngIf="cardLists" class="row flex-row flex-nowrap">
-    <ng-container  *ngFor="let tmpList of cardLists">
-      <div class="col-3" *ngIf="tmpList.archive === false">
-        <h3 class="p-3 mb-2 bg-primary text-white">
-          {{tmpList.id}} - {{tmpList.listName}}
-          <button class="btn btn-primary" type="button" data-toggle="collapse" [attr.data-target]="'#collapseListMenu' + tmpList.id" aria-expanded="false" aria-controls="collapseExample">
-            ...
-          </button>
-          <div class="collapse" id="{{'collapseListMenu' + tmpList.id}}">
-            <div class="card card-body">
-              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addCardModal" (click)="cardList = tmpList.id">Add card</button>
-              <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editListModal" (click)="cardList = tmpList.id">Edit list</button>
-              <button type="button" class="btn btn-danger" (click)="archiveCardList(tmpList.id, table.id)">Archive list</button>
-            </div>
-          </div>
-        </h3>
-        <ng-container *ngIf="cards">
-          <ng-container *ngFor="let tmpCards of cards | listId: tmpList.id">
-              <h6 class="p-3 mb-2 bg-light text-dark">
-                {{tmpCards.id}} - {{tmpCards.title}}
-                <button class="btn btn-light" type="button" data-toggle="collapse" [attr.data-target]="'#collapseCardMenu' + tmpCards.id" aria-expanded="false" aria-controls="collapseExample">
-                  ...
-                </button>
-                <div class="collapse" id="{{'collapseCardMenu' + tmpCards.id}}">
-                  <div class="card card-body">
-                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editCardModal" (click)="cardList = tmpCards.id">Edit card</button>
-<!--                    <button type="button" class="btn btn-light" (click)="getFiles(tmpCards.id)">Add attachments</button>-->
-<!--                    <button type="button" class="btn btn-light" >Add Attachments</button>-->
-                  </div>
-                </div>
+  <div style="background-image: url({{table.pic}})">
+    <h1 class="p-3 mb-2 bg-dark text-white">
+      {{table.id}} - {{table.tableName}}
+      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addListModal">
+        Create new list
+      </button>
+    </h1>
+    <div class="container-fluid">
+      <div *ngIf="cardLists" class="row flex-row flex-nowrap">
+        <ng-container *ngFor="let tmpList of cardLists">
+          <div class="col-3" *ngIf="tmpList.archive === false">
+            <h3 class="p-3 mb-2 bg-primary text-white">
+              {{tmpList.id}} - {{tmpList.listName}}
+              <button class="btn btn-primary" type="button" data-toggle="collapse"
+                      [attr.data-target]="'#collapseListMenu' + tmpList.id" aria-expanded="false"
+                      aria-controls="collapseExample">
+                ...
+              </button>
+              <div class="collapse" id="{{'collapseListMenu' + tmpList.id}}">
                 <div class="card card-body">
-                  {{tmpCards.description}}
+                  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addCardModal"
+                          (click)="cardList = tmpList.id">Add card
+                  </button>
+                  <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editListModal"
+                          (click)="cardList = tmpList.id">Edit list
+                  </button>
+                  <button type="button" class="btn btn-danger" (click)="archiveCardList(tmpList.id, table.id)">Archive
+                    list
+                  </button>
                 </div>
-                <ng-container *ngIf="files">
+              </div>
+            </h3>
+            <ng-container *ngIf="cards">
+              <ng-container *ngFor="let tmpCards of cards | listId: tmpList.id">
+                <h6 class="p-3 mb-2 bg-light text-dark">
+                  {{tmpCards.id}} - {{tmpCards.title}}
+                  <button class="btn btn-light" type="button" data-toggle="collapse"
+                          [attr.data-target]="'#collapseCardMenu' + tmpCards.id" aria-expanded="false"
+                          aria-controls="collapseExample">
+                    ...
+                  </button>
+                  <div class="collapse" id="{{'collapseCardMenu' + tmpCards.id}}">
+                    <div class="card card-body">
+                      <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editCardModal"
+                              (click)="cardList = tmpCards.id">Edit card
+                      </button>
+                      <!--                    <button type="button" class="btn btn-light" (click)="getFiles(tmpCards.id)">Add attachments</button>-->
+                      <!--                    <button type="button" class="btn btn-light" >Add Attachments</button>-->
+                    </div>
+                  </div>
+                  <div class="card card-body">
+                    {{tmpCards.description}}
+                  </div>
+                  <ng-container *ngIf="files">
                     <ng-container *ngFor="let tmpFile of files">
                       <ng-container *ngIf="tmpFile.card.id == tmpCards.id">
                         {{tmpFile.name}}
-                        <button type="button" class="btn btn-danger" (click)="deleteFile(table.id, tmpFile.id)">X</button>
+                        <button type="button" class="btn btn-danger" (click)="deleteFile(table.id, tmpFile.id)">X
+                        </button>
                         <br>
                       </ng-container>
                     </ng-container>
-                </ng-container>
-              </h6>
-          </ng-container>
+                  </ng-container>
+                </h6>
+              </ng-container>
+            </ng-container>
+          </div>
         </ng-container>
       </div>
-    </ng-container>
+    </div>
   </div>
-</div>
 </ng-container>
 
 <!-- add List Modal -->
-<div class="modal fade" id="addListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -78,14 +94,17 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="addCardList(table.id, name.value)" data-dismiss="modal" >Save changes</button>
+        <button type="button" class="btn btn-primary" (click)="addCardList(table.id, name.value)" data-dismiss="modal">
+          Save changes
+        </button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- add Card Modal -->
-<div class="modal fade" id="addCardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addCardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -107,14 +126,17 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="addCard(table.id, cardList, name.value, description.value)" data-dismiss="modal" >Save changes</button>
+        <button type="button" class="btn btn-primary"
+                (click)="addCard(table.id, cardList, name.value, description.value)" data-dismiss="modal">Save changes
+        </button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- edit Card Modal -->
-<div class="modal fade" id="editCardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editCardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -136,14 +158,17 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="editCard(table.id, cardList, name.value, description.value)" data-dismiss="modal" >Save changes</button>
+        <button type="button" class="btn btn-primary"
+                (click)="editCard(table.id, cardList, name.value, description.value)" data-dismiss="modal">Save changes
+        </button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- edit Card List Modal -->
-<div class="modal fade" id="editListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -165,7 +190,10 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="editCardList(table.id, cardList, newCardListName.value, newCardTableId.value)" data-dismiss="modal" >Save changes</button>
+        <button type="button" class="btn btn-primary"
+                (click)="editCardList(table.id, cardList, newCardListName.value, newCardTableId.value)"
+                data-dismiss="modal">Save changes
+        </button>
       </div>
     </div>
   </div>

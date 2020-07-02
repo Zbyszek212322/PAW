@@ -1,12 +1,10 @@
 import {Component, NgModule, OnInit} from '@angular/core';
 import {TableService} from '../../services/table.service';
 import {TablePayload} from '../../payloads/table-payload';
-import {FormControl} from '@angular/forms';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {AuthService} from '../../services/auth.service';
+import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 
-
+import { FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-table-list',
@@ -15,14 +13,16 @@ import {Router} from '@angular/router';
 })
 export class TableListComponent implements OnInit {
 
+  selectedFiles: FileList;
+  currentFile: File;
+
   name = new FormControl('');
   updateName = new FormControl('');
   updateTableId: number;
 
   tables: TablePayload[];
-  private postId: any;
 
-  constructor(public authService: AuthService, private tableService: TableService, private http: HttpClient, private router: Router) {}
+  constructor(private tableService: TableService, private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
     this.listTables();
@@ -64,6 +64,17 @@ export class TableListComponent implements OnInit {
   setTableId(tableId: number) {
     this.updateTableId = tableId;
     console.log(this.updateTableId);
+  }
+
+  selectFile(event) {
+    this.selectedFiles = event.target.files;
+  }
+
+  upload(id: number) {
+    this.currentFile = this.selectedFiles.item(0);
+    this.tableService.addImage(id, this.currentFile).subscribe();
+
+    this.selectedFiles = undefined;
   }
 
 }

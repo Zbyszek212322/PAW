@@ -30,9 +30,6 @@ public class TableList {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "picture_name")
-    private String picName;
-
     @Column(name = "mimetype")
     private String mimetype;
 

@@ -16,6 +16,7 @@ export class TableService {
   private jsonEditListPost: { table_id: number; listName: string, cardListId: number };
   private jsonCardPost: { cardName: string, description: string, cardListId: number };
   private jsonCardEditPost: { cardName: string, description: string, cardId: number };
+  private jsonImagePost: { tableId: number, file: File };
 
   constructor(private httpClient: HttpClient) {
     this.apiHostLink = 'http://localhost:8080/api';
@@ -94,5 +95,11 @@ export class TableService {
 
   deleteFile(fileId: number) {
     return this.httpClient.delete(this.apiHostLink + '/file/?id=' + fileId);
+  }
+
+  addImage(id: number, fileString: File): Observable<{}> {
+    const formData: FormData = new FormData();
+    formData.append('file', fileString);
+    return this.httpClient.post<any>(this.apiHostLink + '/table-list/background/' + id, formData);
   }
 }

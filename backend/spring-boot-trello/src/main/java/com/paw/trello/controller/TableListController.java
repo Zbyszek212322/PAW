@@ -17,7 +17,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
+import java.sql.SQLOutput;
 
 @RestController
 @RequestMapping("/api/table-list")
@@ -73,13 +75,13 @@ public class TableListController {
         return  new ResponseEntity<>(table, HttpStatus.OK);
     }
 
-    @PostMapping("/background")
-    public String uploadBackground(@RequestParam("file") MultipartFile file,
-                                      @RequestParam("tableId") String tableId) throws TableNotFoundException {
-        return tableListService.uploadBackgroundPicture(file, tableId);
+    @PostMapping("/background/{id}")
+    public ResponseEntity<String> uploadBackground(@PathVariable  @RequestBody Long id, @RequestParam("file") MultipartFile file) throws TableNotFoundException, IOException {
+        tableListService.uploadBackgroundPicture(file, id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/background")
+    @DeleteMapping("/background")
     public ResponseEntity<String> deleteBackground(@RequestParam(name = "tableId") Long tableId) throws TableNotFoundException {
         tableListService.deleteBackgroundPicture(tableId);
         return  new ResponseEntity<>("Background picture for table: " + tableId + " deleted successfully", HttpStatus.OK);

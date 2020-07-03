@@ -25,6 +25,9 @@ export class TableComponent implements OnInit {
   newCardTableId = new FormControl();
   newCardListName = new FormControl('');
 
+  selectedFiles: FileList;
+  currentFile: File;
+
   cardList: number;
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -129,6 +132,29 @@ export class TableComponent implements OnInit {
   deleteFile(tableId: number, fileId: number) {
     this.tableService.deleteFile(fileId).subscribe();
     this.getFiles();
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigateByUrl('/table/' + tableId).then(r => true);
+  }
+
+  deleteBackground(tableId: number) {
+    this.tableService.deleteImage(tableId).subscribe();
+    //this.getFiles();
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigateByUrl('/table/' + tableId).then(r => true);
+  }
+
+  selectFile(event) {
+    this.selectedFiles = event.target.files;
+  }
+
+  upload(tableId: number) {
+    this.currentFile = this.selectedFiles.item(0);
+    this.tableService.addImage(tableId, this.currentFile).subscribe();
+
+    this.selectedFiles = undefined;
+
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
     this.router.navigateByUrl('/table/' + tableId).then(r => true);

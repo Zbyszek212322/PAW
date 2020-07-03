@@ -102,4 +102,8 @@ export class TableService {
     formData.append('file', fileString);
     return this.httpClient.post<any>(this.apiHostLink + '/table-list/background/' + id, formData);
   }
+
+  deleteImage(id: number) {
+    return this.httpClient.delete(this.apiHostLink + '/table-list/background/?tableId=' + id);
+  }
 }

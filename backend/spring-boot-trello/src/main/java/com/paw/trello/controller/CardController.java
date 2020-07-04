@@ -68,4 +68,16 @@ public class CardController {
         Card cardd = cardService.save(card);
         return  new ResponseEntity<>(cardd, HttpStatus.OK);
     }
+
+    @PutMapping("/moveRight/{id}")
+    public ResponseEntity<String> moveRight(@PathVariable @RequestBody Long id) {
+        cardService.moveRight(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/moveLeft/{id}")
+    public ResponseEntity<String> moveLeft(@PathVariable @RequestBody Long id) {
+        cardService.moveLeft(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

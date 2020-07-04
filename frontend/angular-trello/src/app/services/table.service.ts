@@ -75,6 +75,15 @@ export class TableService {
     return this.httpClient.put<any>(this.apiHostLink + '/card-list/moveRight/' + listId, '');
   }
 
+
+  moveRightCard(cardId: number) {
+    return this.httpClient.put<any>(this.apiHostLink + '/card/moveRight/' + cardId, '');
+  }
+
+  moveLeftCard(cardId: number) {
+    return this.httpClient.put<any>(this.apiHostLink + '/card/moveLeft/' + cardId, '');
+  }
+
   archiveCardList(tableId: number): Observable<CardListPayload[]> {
     return this.httpClient.post<any>(this.apiHostLink + '/card-list/' + tableId + '/archive/', '');
   }

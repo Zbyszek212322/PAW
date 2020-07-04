@@ -108,6 +108,22 @@ export class TableComponent implements OnInit {
     });
   }
 
+  moveRightCard(cardId: number, TableId: number) {
+    this.tableService.moveRightCard(cardId).subscribe(data => {
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigateByUrl('/table/' + TableId).then(r => true);
+    });
+  }
+
+  moveLeftCard(cardId: number, TableId: number) {
+    this.tableService.moveLeftCard(cardId).subscribe(data => {
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigateByUrl('/table/' + TableId).then(r => true);
+    });
+  }
+
   addCard(tableId: number, cardListId: number, name: string, desc: string) {
     this.tableService.addCard(cardListId, name, desc).subscribe(data => {
       this.name.setValue('');

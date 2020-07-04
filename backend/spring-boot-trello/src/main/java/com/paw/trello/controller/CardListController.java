@@ -50,13 +50,13 @@ public class CardListController {
     }
 
     @PutMapping("/moveLeft/{id}")
-    public ResponseEntity<String> moveLeft(@PathVariable @RequestBody Long id) throws TableNotFoundException {
+    public ResponseEntity<String> moveLeft(@PathVariable @RequestBody Long id) {
         cardListService.moveLeft(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/moveRight/{id}")
-    public ResponseEntity<String> moveRight(@PathVariable @RequestBody Long id) throws TableNotFoundException {
+    public ResponseEntity<String> moveRight(@PathVariable @RequestBody Long id) {
         cardListService.moveRight(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

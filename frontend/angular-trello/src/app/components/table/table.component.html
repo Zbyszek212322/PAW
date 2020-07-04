@@ -52,12 +52,14 @@
             <ng-container *ngIf="cards">
               <ng-container *ngFor="let tmpCards of cards | listId: tmpList.id">
                 <h6 class="p-3 mb-2 bg-light text-dark">
-                  {{tmpCards.title}}
+                  {{tmpCards.title}} <br>
+                  <button class="btn btn-sm btn btn-outline-dark" type="button" (click)="moveLeftCard(tmpCards.id, table.id)"><<</button>
                   <button class="btn btn-light" type="button" data-toggle="collapse"
                           [attr.data-target]="'#collapseCardMenu' + tmpCards.id" aria-expanded="false"
                           aria-controls="collapseExample">
                     ...
                   </button>
+                  <button class="btn btn-sm btn btn-outline-dark" type="button" (click)="moveRightCard(tmpCards.id, table.id)">>></button>
                   <div class="collapse" id="{{'collapseCardMenu' + tmpCards.id}}">
                     <div class="card card-body">
                       <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editCardModal"

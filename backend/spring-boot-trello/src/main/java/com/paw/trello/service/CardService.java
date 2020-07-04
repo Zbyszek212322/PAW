@@ -6,11 +6,13 @@ import com.paw.trello.dto.CardAddPost;
 import com.paw.trello.dto.CardDto;
 import com.paw.trello.dto.CardUpdatePost;
 import com.paw.trello.entity.Card;
+import com.paw.trello.entity.CardList;
 import com.paw.trello.exceptions.TableNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
@@ -70,6 +72,38 @@ public class CardService {
         card.setTitle(cardUpdatePost.getCardName());
         card.setDescription(cardUpdatePost.getDescription());
         cardRepository.save(card);
+    }
+
+
+
+    public void moveRight (Long id) {
+        Optional<Card> cardOptional = cardRepository.findById(id);
+        Card card = cardOptional.get();
+        Long tableId = card.getList().getTtable().getId();
+        List<CardList> cardLists = cardListRepository.findAllByTtable_IdOrderByOrderNo(tableId);
+
+        for(int i = 0; i < cardLists.size(); i++) {
+            if(cardLists.get(i).getId().equals(card.getList().getId()) && i < cardLists.size() - 1) {
+                card.setList(cardLists.get(i + 1));
+                cardRepository.save(card);
+                break;
+            }
+        }
+    }
+
+    public void moveLeft (Long id) {
+        Optional<Card> cardOptional = cardRepository.findById(id);
+        Card card = cardOptional.get();
+        Long tableId = card.getList().getTtable().getId();
+        List<CardList> cardLists = cardListRepository.findAllByTtable_IdOrderByOrderNo(tableId);
+
+        for(int i = 0; i < cardLists.size(); i++) {
+            if(cardLists.get(i).getId().equals(card.getList().getId()) && i > 0) {
+                card.setList(cardLists.get(i - 1));
+                cardRepository.save(card);
+                break;
+            }
+        }
     }
 
     public static CardDto mapFromTableListToDto(Card card) {

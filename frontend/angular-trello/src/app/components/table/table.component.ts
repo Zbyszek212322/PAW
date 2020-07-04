@@ -7,6 +7,7 @@ import {CardListPayload} from '../../payloads/card-list-payload';
 import {HttpClient} from '@angular/common/http';
 import {FormControl} from '@angular/forms';
 import {FilePayload} from '../../payloads/file-payload';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-table',
@@ -158,7 +159,6 @@ export class TableComponent implements OnInit {
 
   deleteBackground(tableId: number) {
     this.tableService.deleteImage(tableId).subscribe();
-    //this.getFiles();
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
     this.router.navigateByUrl('/table/' + tableId).then(r => true);
@@ -190,6 +190,16 @@ export class TableComponent implements OnInit {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
     this.router.navigateByUrl('/table/' + tableId).then(r => true);
+  }
+
+  downloadFile(fileName: string, pic: string, mimetype: string) {
+    this.getFiles();
+    // @ts-ignore
+    const FileSaver = require('file-saver');
+
+    const blob = new Blob([pic], {type: mimetype});
+    // FileSaver.saveAs(blob, fileName, true);
+    FileSaver.saveAs(blob, fileName);
   }
 
 }

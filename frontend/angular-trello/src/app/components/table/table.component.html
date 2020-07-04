@@ -27,12 +27,14 @@
         <ng-container *ngFor="let tmpList of cardLists">
           <div class="col-3" *ngIf="tmpList.archive === false">
             <h3 class="p-3 mb-2 bg-primary text-white">
-              {{tmpList.id}} - {{tmpList.listName}}
+              {{tmpList.listName}} <br>
+              <button class="btn btn-sm btn btn-outline-dark" type="button" (click)="moveLeftList(tmpList.id, table.id)"><<</button>
               <button class="btn btn-primary" type="button" data-toggle="collapse"
                       [attr.data-target]="'#collapseListMenu' + tmpList.id" aria-expanded="false"
                       aria-controls="collapseExample">
                 ...
               </button>
+              <button class="btn btn-sm btn btn-outline-dark" type="button" (click)="moveRightList(tmpList.id, table.id)">>></button>
               <div class="collapse" id="{{'collapseListMenu' + tmpList.id}}">
                 <div class="card card-body">
                   <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addCardModal"

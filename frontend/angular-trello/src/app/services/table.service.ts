@@ -67,8 +67,16 @@ export class TableService {
     return this.httpClient.put<any>(this.apiHostLink + '/card-list/update', this.jsonEditListPost);
   }
 
+  moveLeftList(listId: number) {
+    return this.httpClient.put<any>(this.apiHostLink + '/card-list/moveLeft/' + listId, '');
+  }
+
+  moveRightList(listId: number) {
+    return this.httpClient.put<any>(this.apiHostLink + '/card-list/moveRight/' + listId, '');
+  }
+
   archiveCardList(tableId: number): Observable<CardListPayload[]> {
-    return this.httpClient.get<any>(this.apiHostLink + '/card-list/' + tableId + '/archive/');
+    return this.httpClient.post<any>(this.apiHostLink + '/card-list/' + tableId + '/archive/', '');
   }
 
   addCard(cardList: number, name: string, desc: string): Observable<{}> {

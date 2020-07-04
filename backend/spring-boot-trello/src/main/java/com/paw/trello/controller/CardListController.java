@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/card-list")
@@ -32,14 +32,14 @@ public class CardListController {
         return cardListService.findById(id);
     }
 
-    @GetMapping("/{id}/archive")
+    @PostMapping("/{id}/archive")
     public ResponseEntity<String> archive(@PathVariable @RequestBody Long id) throws TableNotFoundException {
         cardListService.archive(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/get/table/{id}")
-    public Set<CardListDto> findAllCardsFromTable(@PathVariable @RequestBody Long id) {
+    public List<CardListDto> findAllCardsFromTable(@PathVariable @RequestBody Long id) {
         return cardListService.findAllCardListsFromTable(id);
     }
 
@@ -47,6 +47,18 @@ public class CardListController {
     public ResponseEntity<String> addCardList(@RequestBody CardListPost cardList) throws TableNotFoundException {
         cardListService.add(cardList);
         return  new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/moveLeft/{id}")
+    public ResponseEntity<String> moveLeft(@PathVariable @RequestBody Long id) throws TableNotFoundException {
+        cardListService.moveLeft(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/moveRight/{id}")
+    public ResponseEntity<String> moveRight(@PathVariable @RequestBody Long id) throws TableNotFoundException {
+        cardListService.moveRight(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/update")

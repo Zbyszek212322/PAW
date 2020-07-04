@@ -4,19 +4,21 @@ import com.paw.trello.dao.CardListRepository;
 import com.paw.trello.dao.TableListRepository;
 import com.paw.trello.dto.CardListDto;
 import com.paw.trello.dto.CardListPost;
+import com.paw.trello.entity.Card;
 import com.paw.trello.entity.CardList;
 import com.paw.trello.exceptions.TableNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import  java.util.List;
-import java.util.Set;
+import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 @Service
 public class CardListService {
+
+
+    private static Long orderNo = 6L;
 
     private final CardListRepository cardListRepository;
     private final TableListRepository tableListRepository;
@@ -38,14 +40,53 @@ public class CardListService {
         return cardLists.stream().map(CardListService::mapFromCardListToDto).collect(toList());
     }
 
-    public Set<CardListDto> findAllCardListsFromTable(Long id) {
-        Set<CardList> cardLists = cardListRepository.findAllByTtable_Id(id);
-        return cardLists.stream().map(CardListService::mapFromCardListToDto).collect(toSet());
+    public List<CardListDto> findAllCardListsFromTable(Long id) {
+        List<CardList> cardLists = cardListRepository.findAllByTtable_Id(id);
+
+        return cardLists.stream().map(CardListService::mapFromCardListToDto).sorted().collect(toList());
+    }
+
+    public void moveLeft (Long id) {
+        CardList cardList = cardListRepository.findAllById(id);
+        Long tableId = cardList.getTtable().getId();
+        List<CardList> cardLists = cardListRepository.findAllByTtable_IdOrderByOrderNo(tableId);
+
+        for(int i = 0; i < cardLists.size(); i++) {
+            if(cardLists.get(i).getId().equals(cardList.getId()) && i > 0) {
+                CardList cardList2 = cardLists.get(i - 1);
+                Long orderNo = cardList.getOrderNo();
+                cardList.setOrderNo(cardList2.getOrderNo());
+                cardListRepository.save(cardList);
+                cardList2.setOrderNo(orderNo);
+                cardListRepository.save(cardList2);
+                break;
+            }
+        }
+    }
+
+    public void moveRight (Long id) {
+        CardList cardList = cardListRepository.findAllById(id);
+        Long tableId = cardList.getTtable().getId();
+        List<CardList> cardLists = cardListRepository.findAllByTtable_IdOrderByOrderNo(tableId);
+
+        for(int i = 0; i < cardLists.size(); i++) {
+            if(cardLists.get(i).getId().equals(cardList.getId()) && i < cardLists.size() - 1) {
+                CardList cardList2 = cardLists.get(i + 1);
+                Long orderNo = cardList.getOrderNo();
+                cardList.setOrderNo(cardList2.getOrderNo());
+                cardListRepository.save(cardList);
+                cardList2.setOrderNo(orderNo);
+                cardListRepository.save(cardList2);
+                break;
+            }
+        }
     }
 
     public CardList add(CardListPost cardListPost) throws TableNotFoundException {
         CardList cardList = new CardList();
         cardList.setListName(cardListPost.getListName());
+        cardList.setOrderNo(orderNo);
+        orderNo++;
         cardList.setTtable(tableListRepository.findById(cardListPost.getTable_id()).orElseThrow(() -> new TableNotFoundException("Brak tabeli")));
         return cardListRepository.save(cardList);
     }
@@ -55,6 +96,7 @@ public class CardListService {
         cardListDto.setId(cardList.getId());
         cardListDto.setListName(cardList.getListName());
         cardListDto.setArchive(cardList.isArchive());
+        cardListDto.setOrderNo(cardList.getOrderNo());
         return cardListDto;
     }
 

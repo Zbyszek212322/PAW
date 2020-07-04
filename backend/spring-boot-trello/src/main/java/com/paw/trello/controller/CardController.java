@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -35,12 +36,12 @@ public class CardController {
     }
 
     @GetMapping("/get/cardList/{id}")
-    public Set<CardDto> getByIdd(@PathVariable @RequestBody Long id) {
+    public List<CardDto> getByIdd(@PathVariable @RequestBody Long id) {
         return cardService.findAllCardsFromList(id);
     }
 
     @GetMapping("/get/table/{id}")
-    public Set<CardDto> getByTable(@PathVariable @RequestBody Long id) {
+    public List<CardDto> getByTable(@PathVariable @RequestBody Long id) {
         return cardService.findAllCardsByTable(id);
     }
 

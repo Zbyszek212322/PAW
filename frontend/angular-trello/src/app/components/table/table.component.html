@@ -4,7 +4,7 @@
               background-position: center;
               background-size: cover;">
     <h1 class="p-3 mb-2 bg-dark text-white">
-      {{table.id}} - {{table.tableName}}
+      {{table.tableName}}
       <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addListModal">
         Create new list
       </button>
@@ -52,7 +52,7 @@
             <ng-container *ngIf="cards">
               <ng-container *ngFor="let tmpCards of cards | listId: tmpList.id">
                 <h6 class="p-3 mb-2 bg-light text-dark">
-                  {{tmpCards.id}} - {{tmpCards.title}}
+                  {{tmpCards.title}}
                   <button class="btn btn-light" type="button" data-toggle="collapse"
                           [attr.data-target]="'#collapseCardMenu' + tmpCards.id" aria-expanded="false"
                           aria-controls="collapseExample">

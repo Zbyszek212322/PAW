@@ -39,14 +39,14 @@ public class CardService {
         return cardList.stream().map(CardService::mapFromTableListToDto).collect(toList());
     }
 
-    public Set<CardDto> findAllCardsFromList(Long id) {
-        Set<Card> cardList = cardRepository.findAllByList_Id(id);
-        return cardList.stream().map(CardService::mapFromTableListToDto).collect(toSet());
+    public List<CardDto> findAllCardsFromList(Long id) {
+        List<Card> cardList = cardRepository.findAllByList_Id(id);
+        return cardList.stream().map(CardService::mapFromTableListToDto).sorted().collect(toList());
     }
 
-    public Set<CardDto> findAllCardsByTable(Long id) {
-        Set<Card> cardList = cardRepository.findAllByList_Ttable_Id(id);
-        return cardList.stream().map(CardService::mapFromTableListToDto).collect(toSet());
+    public List<CardDto> findAllCardsByTable(Long id) {
+        List<Card> cardList = cardRepository.findAllByList_Ttable_Id(id);
+        return cardList.stream().map(CardService::mapFromTableListToDto).sorted().collect(toList());
     }
 
     public Card save(Card card) {

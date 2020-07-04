@@ -4,10 +4,8 @@ import {TableService} from '../../services/table.service';
 import {TablePayload} from '../../payloads/table-payload';
 import {CardPayload} from '../../payloads/card-payload';
 import {CardListPayload} from '../../payloads/card-list-payload';
-import {HttpClient} from '@angular/common/http';
 import {FormControl} from '@angular/forms';
 import {FilePayload} from '../../payloads/file-payload';
-import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-table',
@@ -193,13 +191,25 @@ export class TableComponent implements OnInit {
   }
 
   downloadFile(fileName: string, pic: string, mimetype: string) {
-    this.getFiles();
     // @ts-ignore
     const FileSaver = require('file-saver');
-
-    const blob = new Blob([pic], {type: mimetype});
-    // FileSaver.saveAs(blob, fileName, true);
-    FileSaver.saveAs(blob, fileName);
+    FileSaver.saveAs(this.base64ToBlob(pic, mimetype), fileName);
   }
 
+  public base64ToBlob(b64Data, contentType= '', sliceSize= 512) {
+    b64Data = b64Data.replace(/\s/g, '');
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+    return new Blob(byteArrays, {type: contentType});
+  }
 }

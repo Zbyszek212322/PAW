@@ -6,5 +6,6 @@
 backend/.idea
 backend/spring-boot-trello/.idea
 backend/spring-boot-trello/target/*
+backend/spring-boot-trello/src/main/resources/application.properties
 
 frontend/angular-trello/node_modules/*

@@ -1,18 +1,21 @@
 package com.paw.trello.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name="table_list")
+@Table
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TableList {
+public class Tables {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,12 +26,12 @@ public class TableList {
     private String tableName;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ttable")
-    private Set<CardList> ttables;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tables")
+    private Set<Lists> tables;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "users_id", nullable = false)
+    private Users users;
 
     @Column(name = "mimetype")
     private String mimetype;
@@ -37,10 +40,10 @@ public class TableList {
     @Column(name = "pic")
     private byte[] pic;
 
-    public TableList(Long id, String tableName, User user) {
+    public Tables(Long id, String tableName, Users users) {
 
         this.id = id;
         this.tableName = tableName;
-        this.user = user;
+        this.users = users;
     }
 }

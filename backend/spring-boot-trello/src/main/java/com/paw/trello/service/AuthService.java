@@ -1,9 +1,9 @@
 package com.paw.trello.service;
 
+import com.paw.trello.dao.UsersRepository;
 import com.paw.trello.dto.LoginRequest;
-import com.paw.trello.dao.UserRepository;
 import com.paw.trello.dto.RegisterRequest;
-import com.paw.trello.entity.User;
+import com.paw.trello.entity.Users;
 import com.paw.trello.security.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +19,7 @@ import java.util.Optional;
 public class AuthService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UsersRepository usersRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -32,10 +32,10 @@ public class AuthService {
     }
 
     public void signup(RegisterRequest registerRequest) {
-        User user = new User();
-        user.setUsername(registerRequest.getUsername());
-        user.setPassword(encodePassword(registerRequest.getPassword()));
-        userRepository.save(user);
+        Users users = new Users();
+        users.setUsername(registerRequest.getUsername());
+        users.setPassword(encodePassword(registerRequest.getPassword()));
+        usersRepository.save(users);
     }
 
     public AuthenticationResponse login(LoginRequest loginRequest) {

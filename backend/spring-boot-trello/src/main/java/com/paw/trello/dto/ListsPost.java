@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CardListPost {
+public class ListsPost {
     private String listName;
     private Long table_id;
     private Long cardListId;

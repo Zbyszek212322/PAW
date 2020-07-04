@@ -4,14 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @Table
-public class User {
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,7 +18,7 @@ public class User {
     private String username;
     @Column
     private String password;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private Set<TableList> tableLists;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "users")
+    private Set<Tables> tables;
 }
 

@@ -1,9 +1,9 @@
 package com.paw.trello.service;
 
-import com.paw.trello.dao.TableListRepository;
-import com.paw.trello.dao.UserRepository;
-import com.paw.trello.dto.TableListDto;
-import com.paw.trello.entity.TableList;
+import com.paw.trello.dao.TablesRepository;
+import com.paw.trello.dao.UsersRepository;
+import com.paw.trello.dto.TablesDto;
+import com.paw.trello.entity.Tables;
 import com.paw.trello.exceptions.TableNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -20,67 +20,67 @@ import java.util.zip.Inflater;
 import static java.util.stream.Collectors.toList;
 
 @Service
-public class TableListService {
+public class TablesService {
 
-    private final TableListRepository tableListRepository;
-    private final UserRepository userRepository;
+    private final TablesRepository tablesRepository;
+    private final UsersRepository usersRepository;
 
     @Autowired
-    public TableListService(TableListRepository tableListRepository, UserRepository userRepository) {
+    public TablesService(TablesRepository tablesRepository, UsersRepository usersRepository) {
         super();
-        this.tableListRepository = tableListRepository;
-        this.userRepository = userRepository;
+        this.tablesRepository = tablesRepository;
+        this.usersRepository = usersRepository;
     }
 
-    public TableListDto findById(Long id) throws TableNotFoundException {
-        TableList tableList = tableListRepository.findById(id).orElseThrow(() -> new TableNotFoundException("Brak tabeli " + id));
-        return mapFromTableListToDto(tableList);
+    public TablesDto findById(Long id) throws TableNotFoundException {
+        Tables tables = tablesRepository.findById(id).orElseThrow(() -> new TableNotFoundException("Brak tabeli " + id));
+        return mapFromTableListToDto(tables);
     }
 
-    public Iterable<TableListDto> findAll(Authentication auth) {
-        Set<TableList> tableLists = tableListRepository.getAllByUserId(userRepository.findByUsername(auth.getName()).getId());
-        return tableLists.stream().map(this::mapFromTableListToDto).collect(toList());
+    public Iterable<TablesDto> findAll(Authentication auth) {
+        Set<Tables> tables = tablesRepository.getAllByUsersId(usersRepository.findByUsername(auth.getName()).getId());
+        return tables.stream().map(this::mapFromTableListToDto).collect(toList());
     }
 
-    public TableList save(TableList tableList) {
-        return tableListRepository.save(tableList);
+    public Tables save(Tables tables) {
+        return tablesRepository.save(tables);
     }
 
     public void deleteById(Long id) {
-        tableListRepository.deleteById(id);
+        tablesRepository.deleteById(id);
     }
 
-    public TableListDto mapFromTableListToDto(TableList tableList) {
-        TableListDto tableListDto = new TableListDto();
-        tableListDto.setId(tableList.getId());
-        tableListDto.setTableName(tableList.getTableName());
-        tableListDto.setUser(tableList.getUser().getUsername());
-        tableListDto.setMimetype(tableList.getMimetype());
-        tableListDto.setPic(decompressBytes(tableList.getPic()));
-        return tableListDto;
+    public TablesDto mapFromTableListToDto(Tables tables) {
+        TablesDto tablesDto = new TablesDto();
+        tablesDto.setId(tables.getId());
+        tablesDto.setTableName(tables.getTableName());
+        tablesDto.setUser(tables.getUsers().getUsername());
+        tablesDto.setMimetype(tables.getMimetype());
+        tablesDto.setPic(decompressBytes(tables.getPic()));
+        return tablesDto;
     }
 
     public void updateById(Long id, String name) throws TableNotFoundException {
-        TableList tableList = tableListRepository.findById(id).orElseThrow(() -> new TableNotFoundException("Brak tabeli " + id));
-        tableList.setTableName(name);
-        tableListRepository.save(tableList);
+        Tables tables = tablesRepository.findById(id).orElseThrow(() -> new TableNotFoundException("Brak tabeli " + id));
+        tables.setTableName(name);
+        tablesRepository.save(tables);
     }
 
-    public TableList uploadBackgroundPicture(MultipartFile file, Long tableId) throws TableNotFoundException, IOException {
-        TableList tableList = tableListRepository.findById(tableId)
+    public Tables uploadBackgroundPicture(MultipartFile file, Long tableId) throws TableNotFoundException, IOException {
+        Tables tables = tablesRepository.findById(tableId)
                 .orElseThrow(() -> new TableNotFoundException("Brak tabeli " + tableId));
-        tableList.setMimetype(file.getContentType());
-        tableList.setPic(compressBytes(file.getBytes()));
-        return tableListRepository.save(tableList);
+        tables.setMimetype(file.getContentType());
+        tables.setPic(compressBytes(file.getBytes()));
+        return tablesRepository.save(tables);
     }
 
     public void deleteBackgroundPicture(Long tableId) throws TableNotFoundException{
 
-        TableList tableList = tableListRepository.findById(tableId)
+        Tables tables = tablesRepository.findById(tableId)
                 .orElseThrow(() -> new TableNotFoundException("Brak tabeli " + tableId));
-        tableList.setMimetype(null);
-        tableList.setPic(null);
-        tableListRepository.save(tableList);
+        tables.setMimetype(null);
+        tables.setPic(null);
+        tablesRepository.save(tables);
     }
 
     // compress the image bytes before storing it in the database

@@ -1,9 +1,9 @@
 package com.paw.trello.controller;
 
-import com.paw.trello.dto.CardListDto;
-import com.paw.trello.dto.CardListPost;
+import com.paw.trello.dto.ListsDto;
+import com.paw.trello.dto.ListsPost;
 import com.paw.trello.exceptions.TableNotFoundException;
-import com.paw.trello.service.CardListService;
+import com.paw.trello.service.ListsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,57 +13,57 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/card-list")
-public class CardListController {
+public class ListsController {
 
-    private CardListService cardListService;
+    private ListsService listsService;
 
     @Autowired
-    public CardListController(CardListService cardListService) {
-        this.cardListService = cardListService;
+    public ListsController(ListsService listsService) {
+        this.listsService = listsService;
     }
 
     @GetMapping("/all")
-    public Iterable<CardListDto> getAll() {
-        return cardListService.findAll();
+    public Iterable<ListsDto> getAll() {
+        return listsService.findAll();
     }
 
     @GetMapping("/get/{id}")
-    public CardListDto getById(@PathVariable @RequestBody Long id) throws TableNotFoundException {
-        return cardListService.findById(id);
+    public ListsDto getById(@PathVariable @RequestBody Long id) throws TableNotFoundException {
+        return listsService.findById(id);
     }
 
     @PostMapping("/{id}/archive")
     public ResponseEntity<String> archive(@PathVariable @RequestBody Long id) throws TableNotFoundException {
-        cardListService.archive(id);
+        listsService.archive(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/get/table/{id}")
-    public List<CardListDto> findAllCardsFromTable(@PathVariable @RequestBody Long id) {
-        return cardListService.findAllCardListsFromTable(id);
+    public List<ListsDto> findAllCardsFromTable(@PathVariable @RequestBody Long id) {
+        return listsService.findAllCardListsFromTable(id);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addCardList(@RequestBody CardListPost cardList) throws TableNotFoundException {
-        cardListService.add(cardList);
+    public ResponseEntity<String> addCardList(@RequestBody ListsPost cardList) throws TableNotFoundException {
+        listsService.add(cardList);
         return  new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/moveLeft/{id}")
     public ResponseEntity<String> moveLeft(@PathVariable @RequestBody Long id) {
-        cardListService.moveLeft(id);
+        listsService.moveLeft(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/moveRight/{id}")
     public ResponseEntity<String> moveRight(@PathVariable @RequestBody Long id) {
-        cardListService.moveRight(id);
+        listsService.moveRight(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> updateCard(@RequestBody CardListPost cardListPost) throws TableNotFoundException {
-        cardListService.update(cardListPost);
+    public ResponseEntity<String> updateCard(@RequestBody ListsPost cardListPost) throws TableNotFoundException {
+        listsService.update(cardListPost);
         return  new ResponseEntity<>(HttpStatus.OK);
     }
 }

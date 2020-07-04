@@ -1,7 +1,7 @@
 package com.paw.trello.service;
 
-import com.paw.trello.entity.User;
-import com.paw.trello.dao.UserRepository;
+import com.paw.trello.dao.UsersRepository;
+import com.paw.trello.entity.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,12 +17,12 @@ import java.util.Collections;
 public class UserDetailServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UsersRepository usersRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), true, true, true, true, getAuthorities("ROLE_USER"));
+        Users users = usersRepository.findByUsername(username);
+        return new org.springframework.security.core.userdetails.User(users.getUsername(), users.getPassword(), true, true, true, true, getAuthorities("ROLE_USER"));
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(String role_user) {

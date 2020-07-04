@@ -12,8 +12,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "file_model")
-public class FileModel {
+@Table
+public class Files {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,14 +31,14 @@ public class FileModel {
     private byte[] pic;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(foreignKey = @ForeignKey(name = "card_id"), name = "card_id", nullable = false)
-    private Card card;
+    @JoinColumn(foreignKey = @ForeignKey(name = "cards_id"), name = "cards_id", nullable = false)
+    private Cards cards;
 
-    public FileModel(String name, String mimetype, byte[] pic, Card card) {
+    public Files(String name, String mimetype, byte[] pic, Cards cards) {
 
         this.name = name;
         this.mimetype = mimetype;
         this.pic = pic;
-        this.card = card;
+        this.cards = cards;
     }
 }

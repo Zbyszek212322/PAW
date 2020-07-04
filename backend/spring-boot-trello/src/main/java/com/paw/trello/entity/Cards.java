@@ -1,18 +1,21 @@
 package com.paw.trello.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name="card")
+@Table
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Card {
+public class Cards {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,18 +29,18 @@ public class Card {
     private String description;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(foreignKey = @ForeignKey(name = "list_id"), name = "list_id", nullable = false)
-    private CardList list;
+    @JoinColumn(foreignKey = @ForeignKey(name = "lists_id"), name = "lists_id", nullable = false)
+    private Lists lists;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "card")
-    private Set<FileModel> files;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cards")
+    private Set<Files> files;
 
-    public Card(Long id, String title, String description, CardList list) {
+    public Cards(Long id, String title, String description, Lists list) {
 
         this.id = id;
         this.title = title;
         this.description = description;
-        this.list = list;
+        this.lists = list;
     }
 }

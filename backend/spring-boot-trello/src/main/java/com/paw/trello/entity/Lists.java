@@ -1,18 +1,21 @@
 package com.paw.trello.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name="card_list")
+@Table
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CardList implements Comparable<CardList> {
+public class Lists implements Comparable<Lists> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,22 +33,22 @@ public class CardList implements Comparable<CardList> {
     private Long orderNo;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(foreignKey = @ForeignKey(name = "ttable_id"), name = "ttable_id", nullable = false)
-    private TableList ttable;
+    @JoinColumn(foreignKey = @ForeignKey(name = "tables_id"), name = "tables_id", nullable = false)
+    private Tables tables;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "list")
-    private Set<Card> cards;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lists")
+    private Set<Cards> cards;
 
-    public CardList(Long id, String listName, TableList ttable, Long orderNo) {
+    public Lists(Long id, String listName, Tables ttable, Long orderNo) {
         this.id = id;
         this.listName = listName;
-        this.ttable = ttable;
+        this.tables = ttable;
         this.orderNo = orderNo;
     }
 
     @Override
-    public int compareTo(CardList o) {
+    public int compareTo(Lists o) {
         return this.getOrderNo().compareTo(o.getOrderNo());
     }
 }

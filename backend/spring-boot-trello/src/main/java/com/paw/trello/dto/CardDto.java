@@ -9,7 +9,7 @@ public class CardDto implements Comparable<CardDto> {
     private Long id;
     private String title;
     private String description;
-    private CardListDto list;
+    private ListsDto list;
 
     @Override
     public int compareTo(CardDto o) {

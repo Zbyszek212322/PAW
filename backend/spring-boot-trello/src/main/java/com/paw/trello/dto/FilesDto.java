@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class FileDto {
+public class FilesDto {
 
     private Long id;
     private String name;

@@ -4,10 +4,13 @@ import com.paw.trello.dao.CardRepository;
 import com.paw.trello.dao.FileRepository;
 import com.paw.trello.dto.FileDto;
 import com.paw.trello.entity.FileModel;
+import com.paw.trello.entity.TableList;
+import com.paw.trello.exceptions.TableNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,17 +37,25 @@ public class FileService {
         return files.stream().map(this::mapFromFileToDto).collect(Collectors.toList());
     }
 
-    public String uploadMultipartFile(MultipartFile file, String cardId) {
+    public String uploadMultipartFile(MultipartFile file, Long cardId) {
 
         try {
             FileModel filemodel = new FileModel(file.getOriginalFilename(), file.getContentType(),
-                    file.getBytes(), cardRepository.getOne(Long.parseLong(cardId)));
+                    file.getBytes(), cardRepository.getOne(cardId));
             fileRepository.save(filemodel);
             return "File uploaded successfully! Filename " + file.getOriginalFilename() + " card " + cardId;
         } catch (Exception e) {
             return "FAIL!";
         }
     }
+
+//    public TableList uploadBackgroundPicture(MultipartFile file, Long tableId) throws TableNotFoundException, IOException {
+//        TableList tableList = tableListRepository.findById(tableId)
+//                .orElseThrow(() -> new TableNotFoundException("Brak tabeli " + tableId));
+//        tableList.setMimetype(file.getContentType());
+//        tableList.setPic(compressBytes(file.getBytes()));
+//        return tableListRepository.save(tableList);
+//    }
 
     public void deleteById(Long id) {
         fileRepository.deleteById(id);

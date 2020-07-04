@@ -30,6 +30,9 @@ export class TableComponent implements OnInit {
 
   cardList: number;
 
+  selectedAttachments: FileList;
+  currentAttachment: File;
+
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
               private tableService: TableService) { }
@@ -159,4 +162,18 @@ export class TableComponent implements OnInit {
     this.router.onSameUrlNavigation = 'reload';
     this.router.navigateByUrl('/table/' + tableId).then(r => true);
   }
+
+  selectAttachment(event) {
+    this.selectedAttachments = event.target.files;
+  }
+
+  uploadAttachment(cardId: number, tableId: number) {
+    this.currentAttachment = this.selectedAttachments.item(0);
+    this.tableService.addFile(cardId, this.currentAttachment).subscribe();
+    this.selectedAttachments = undefined;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigateByUrl('/table/' + tableId).then(r => true);
+  }
+
 }

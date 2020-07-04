@@ -13,9 +13,6 @@ import { FormControl} from '@angular/forms';
 })
 export class TableListComponent implements OnInit {
 
-  selectedFiles: FileList;
-  currentFile: File;
-
   name = new FormControl('');
   updateName = new FormControl('');
   updateTableId: number;
@@ -64,17 +61,6 @@ export class TableListComponent implements OnInit {
   setTableId(tableId: number) {
     this.updateTableId = tableId;
     console.log(this.updateTableId);
-  }
-
-  selectFile(event) {
-    this.selectedFiles = event.target.files;
-  }
-
-  upload(id: number) {
-    this.currentFile = this.selectedFiles.item(0);
-    this.tableService.addImage(id, this.currentFile).subscribe();
-
-    this.selectedFiles = undefined;
   }
 
 }

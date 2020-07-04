@@ -106,4 +106,11 @@ export class TableService {
   deleteImage(id: number) {
     return this.httpClient.delete(this.apiHostLink + '/table-list/background/?tableId=' + id);
   }
+
+  addFile(cardId: number, fileString: File): Observable<{}> {
+    const formData: FormData = new FormData();
+    formData.append('file', fileString);
+    return this.httpClient.post<any>(this.apiHostLink + '/file/uploadAttachment/' + cardId, formData);
+  }
+
 }

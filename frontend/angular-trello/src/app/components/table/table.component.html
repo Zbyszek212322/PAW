@@ -1,5 +1,5 @@
 <ng-container *ngIf="table">
-  <div style="background-image: url({{table.pic}}); 
+  <div style="background-image: url({{table.pic}});
               background-repeat:no-repeat;
               background-position: center;
               background-size: cover;">
@@ -17,7 +17,7 @@
         <input type="file" (change)="selectFile($event) "/>
       </label>
       <button class="btn btn-success" [disabled]="!selectedFiles" (click)="upload(table.id)">
-        Upload
+        Zapisz tło
       </button>
 
 
@@ -61,8 +61,12 @@
                       <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editCardModal"
                               (click)="cardList = tmpCards.id">Edit card
                       </button>
-                      <!--                    <button type="button" class="btn btn-light" (click)="getFiles(tmpCards.id)">Add attachments</button>-->
-                      <!--                    <button type="button" class="btn btn-light" >Add Attachments</button>-->
+                      <label class="btn btn-default text-white">
+                        <input type="file" (change)="selectAttachment($event) "/>
+                      </label>
+                      <button class="btn btn-success" [disabled]="!selectedAttachments" (click)="uploadAttachment(tmpCards.id, table.id)">
+                        Add attachment
+                      </button>
                     </div>
                   </div>
                   <div class="card card-body">

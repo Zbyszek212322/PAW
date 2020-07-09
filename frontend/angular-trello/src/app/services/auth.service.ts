@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter, Output } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {LoginPayload} from '../payloads/login-payload';
@@ -14,6 +14,8 @@ import {RegisterPayload} from '../payloads/register-payload';
 export class AuthService {
   private url = 'http://localhost:8080/api/auth/';
 
+  @Output() getLoggedInName: EventEmitter<any> = new EventEmitter();
+
   constructor(private httpClient: HttpClient, private localStorageService: LocalStorageService,  private router: Router) { }
 
 
@@ -25,6 +27,7 @@ export class AuthService {
     return this.httpClient.post<JwtAuthResponse>(this.url + 'login', loginPayload).pipe(map(data => {
       this.localStorageService.store('authenticationToken', data.authenticationToken);
       this.localStorageService.store('username', data.username);
+      this.getLoggedInName.emit(this.localStorageService.retrieve('username'));
       return true;
     }));
   }
@@ -36,6 +39,7 @@ export class AuthService {
   logout() {
     this.localStorageService.clear('authenticationToken');
     this.localStorageService.clear('username');
+    this.getLoggedInName.emit('Sign In');
     this.router.navigateByUrl('/login').then(r => true);
   }
 

@@ -10,10 +10,16 @@ export class HeaderComponent implements OnInit {
 
   username: string;
 
-  constructor(public authService: AuthService) { }
+  constructor(public authService: AuthService) {
+    authService.getLoggedInName.subscribe(name => this.changeName(name));
+   }
 
-  ngOnInit(): void {
-    this.username = this.authService.getUsername();
+  ngOnInit(): void {        
+      this.username = this.authService.getUsername();
+  }
+
+  private changeName(name: string): void {
+    this.username = name;
   }
 
 }

@@ -56,10 +56,10 @@ public class CardController {
         return  new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<String> deleteCard(@RequestParam(name = "cardId") Long cardId) {
-        cardsService.deleteById(cardId);
-        return new ResponseEntity<>("Card with ID:" + cardId + " deleted successfully", HttpStatus.OK);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteCard(@PathVariable @RequestBody Long id) {
+        cardsService.deleteById(id);
+        return new ResponseEntity<>("Card with ID:" + id + " deleted successfully", HttpStatus.OK);
     }
 
     @PutMapping

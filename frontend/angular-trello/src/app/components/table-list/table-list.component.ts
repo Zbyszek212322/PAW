@@ -42,7 +42,6 @@ export class TableListComponent implements OnInit {
   }
 
   updateTable(id: number) {
-    console.log(id);
     this.tableService.updateTable(id, this.updateName.value).subscribe(data => {
       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
       this.router.onSameUrlNavigation = 'reload';
@@ -60,7 +59,6 @@ export class TableListComponent implements OnInit {
 
   setTableId(tableId: number) {
     this.updateTableId = tableId;
-    console.log(this.updateTableId);
   }
 
 }

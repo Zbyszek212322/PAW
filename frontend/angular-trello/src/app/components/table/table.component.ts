@@ -47,14 +47,11 @@ export class TableComponent implements OnInit {
   getTable() {
     this.tableService.getTable(this.permaLink).subscribe((data: TablePayload) => {
       this.table = data;
-      console.log(this.table.pic);
       this.table.pic = 'data:image/jpeg;base64,' + this.table.pic;
-      console.log(this.table.pic);
       this.getCardLists(this.table.id);
       this.getCards(this.table.id);
       this.getFiles();
     }, (error => {
-      console.log('Błąd');
     }));
   }
 
@@ -62,13 +59,20 @@ export class TableComponent implements OnInit {
     this.tableService.getCardLists(tableId).subscribe((data: CardListPayload[]) => {
       this.cardLists = data;
     }, (error => {
-      console.log('Błąd');
     }));
   }
 
   addCardList(tableId: number, name: string) {
     this.tableService.addList(tableId, name).subscribe(data => {
       this.name.setValue('');
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigateByUrl('/table/' + tableId).then(r => true);
+    });
+  }
+
+  deleteCardList(tableId: number, cardId: number) {
+    this.tableService.deleteCard(cardId).subscribe(data => {
       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
       this.router.onSameUrlNavigation = 'reload';
       this.router.navigateByUrl('/table/' + tableId).then(r => true);
@@ -150,16 +154,13 @@ export class TableComponent implements OnInit {
     this.tableService.getCards(tableId).subscribe((data: CardPayload[]) => {
       this.cards = data;
     }, (error => {
-      console.log('Błąd');
     }));
   }
 
   getFiles() {
     this.tableService.getFiles().subscribe((data: FilePayload[]) => {
       this.files = data;
-      console.log('Długoć listy załączników: ', data.length);
     }, (error => {
-      console.log('Błąd');
     }));
   }
 

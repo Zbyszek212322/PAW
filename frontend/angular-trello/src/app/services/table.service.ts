@@ -88,6 +88,10 @@ export class TableService {
     return this.httpClient.post<any>(this.apiHostLink + '/card-list/' + tableId + '/archive/', '');
   }
 
+  deleteCard(cardId: number): Observable<{}> {
+    return this.httpClient.delete<any>(this.apiHostLink + '/card/delete/' + cardId);
+  }
+
   addCard(cardList: number, name: string, desc: string): Observable<{}> {
     this.jsonCardPost = {
       cardName: name,

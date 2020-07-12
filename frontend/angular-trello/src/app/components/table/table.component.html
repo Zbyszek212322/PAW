@@ -65,6 +65,9 @@
                       <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editCardModal"
                               (click)="cardList = tmpCards.id">Edit card
                       </button>
+                      <button type="button" class="btn btn-warning" (click)="deleteCardList(table.id, tmpCards.id)">
+                        Delete card
+                      </button>
                       <label class="btn btn-default text-white">
                         <input type="file" (change)="selectAttachment($event) "/>
                       </label>
